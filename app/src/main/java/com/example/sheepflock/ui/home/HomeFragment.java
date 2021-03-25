@@ -29,7 +29,7 @@ public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
     ListView listView;
-    ArrayList<Sheep> sheeps;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -45,58 +45,50 @@ public class HomeFragment extends Fragment {
         });
 
 
-        SheepsListAdapter adapter = new SheepsListAdapter(getActivity(),getDemo());
+        SheepsListAdapter adapter = new SheepsListAdapter(getActivity(),MainActivity.sheeps);
         listView=(ListView) root.findViewById(R.id.sheepsLst);
         listView.setAdapter(adapter);
         return root;
     }
+    class SheepsListAdapter extends ArrayAdapter<Sheep> {
 
-    ArrayList<Sheep> getDemo(){
-        ArrayList<Sheep> sheeps=new ArrayList<Sheep>();
-        Calendar c = Calendar.getInstance();
-        sheeps.add(new Sheep("id1", "nikName1", 1, c,"",""));
-        c.add(Calendar.DATE, 3);
-        sheeps.add(new Sheep("id2", "nikName2", 1, c,"",""));
-        return sheeps;
+        private final Activity context;
+        private final ArrayList<Sheep> sheeps;
+
+        public SheepsListAdapter(Activity context, ArrayList<Sheep> sheeps) {
+            super(context, R.layout.sheep_item, sheeps);
+            this.context=context;
+            this.sheeps=sheeps;
+        }
+
+        public View getView(int position,View view,ViewGroup parent) {
+            LayoutInflater inflater=context.getLayoutInflater();
+            View rowView=inflater.inflate(R.layout.sheep_item, null,true);
+
+            TextView sheepId = (TextView) rowView.findViewById(R.id.sheepIdTxt);
+            ImageView imageView = (ImageView) rowView.findViewById(R.id.sheepImg);
+            TextView sheepInfoTxt = (TextView) rowView.findViewById(R.id.sheepInfoTxt);
+
+            android.text.format.DateFormat df = new android.text.format.DateFormat();
+            sheepId.setText(sheeps.get(position).id);
+            sheepInfoTxt.setText(df.format("yyyy-MM-dd hh:mm:ss a", sheeps.get(position).lastFeedDate));
+            //imageView.setImageResource(imgid[position]);
+
+            final int position1=position;
+            rowView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Intent intent = new Intent(context, MapsActivity.class);
+                    intent.putExtra("itemId", position1);
+                    context.startActivity(intent);
+
+                }
+            });
+            return rowView;
+        };
     }
+
 }
 
 
-class SheepsListAdapter extends ArrayAdapter<Sheep> {
-
-    private final Activity context;
-    private final ArrayList<Sheep> sheeps;
-
-    public SheepsListAdapter(Activity context, ArrayList<Sheep> sheeps) {
-        super(context, R.layout.sheep_item, sheeps);
-        this.context=context;
-        this.sheeps=sheeps;
-    }
-
-    public View getView(int position,View view,ViewGroup parent) {
-        LayoutInflater inflater=context.getLayoutInflater();
-        View rowView=inflater.inflate(R.layout.sheep_item, null,true);
-
-        TextView sheepId = (TextView) rowView.findViewById(R.id.sheepIdTxt);
-        ImageView imageView = (ImageView) rowView.findViewById(R.id.sheepImg);
-        TextView sheepInfoTxt = (TextView) rowView.findViewById(R.id.sheepInfoTxt);
-
-        android.text.format.DateFormat df = new android.text.format.DateFormat();
-        sheepId.setText(sheeps.get(position).id);
-        sheepInfoTxt.setText(df.format("yyyy-MM-dd hh:mm:ss a", sheeps.get(position).lastFeedDate));
-        //imageView.setImageResource(imgid[position]);
-
-        final int position1=position;
-        rowView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent intent = new Intent(context, MapsActivity.class);
-                intent.putExtra("itemId", position1);
-                context.startActivity(intent);
-
-            }
-        });
-        return rowView;
-    };
-}

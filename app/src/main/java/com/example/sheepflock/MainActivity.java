@@ -22,11 +22,14 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     public static MyLocationManager locationManager;
-
+    public static ArrayList<Sheep> sheeps;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,7 +64,17 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        sheeps=getDemo();
         locationManager=new MyLocationManager(this);
+    }
+
+    ArrayList<Sheep> getDemo(){
+        ArrayList<Sheep> sheeps=new ArrayList<Sheep>();
+        Calendar c = Calendar.getInstance();
+        sheeps.add(new Sheep("id1", "Dolly", 51, c,21.453348173455414,39.94836946708256));
+        c.add(Calendar.HOUR_OF_DAY, 3);
+        sheeps.add(new Sheep("id2", "Polly", 44, c,21.45488170288583,39.95013500744972 ));
+        return sheeps;
     }
 
     @Override
