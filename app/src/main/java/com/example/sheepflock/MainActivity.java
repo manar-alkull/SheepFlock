@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickSettings(MenuItem item) {
-        Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+        Intent intent = new Intent(MainActivity.this,SettingsPage.class);
         //intent.putExtra("EXTRA_SESSION_ID", sessionId);
         startActivity(intent);
     }
@@ -111,8 +111,6 @@ public class MainActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             //HomeFragment homeFragment = (HomeFragment) getFragmentManager().findFragmentById(R.id.example_fragment);
             HomeFragment.refresh();
-
-
         }
     };
 

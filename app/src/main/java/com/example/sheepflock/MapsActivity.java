@@ -2,10 +2,16 @@ package com.example.sheepflock;
 
 import androidx.fragment.app.FragmentActivity;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.sheepflock.alarm.AlarmHandler;
 import com.example.sheepflock.system.SheepContentManager;
@@ -24,7 +30,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     private Sheep sheep;
     SheepContentManager sheepContentManager;
-
+    private static MapsActivity mapsActivity=null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,8 +55,40 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 AlarmHandler.setAlarm(MainActivity.mainActivityContext,sheep);
                 sheepContentManager.saveSheep(sheep);
                 HomeFragment.refresh();
+                preview_();
             }
         });
+
+        mapsActivity=this;
+        preview_();
+    }
+
+    private void preview(){
+        if(mapsActivity!=null)
+            mapsActivity.preview_();
+    }
+    private void preview_() {
+        TextView txtId_preview=findViewById(R.id.txtId_preview);
+        TextView txtNikName_preview=findViewById(R.id.txtNikName_preview);
+        TextView txtWeight_preview=findViewById(R.id.txtWeight_preview);
+        TextView txtLastFeedDate_preview=findViewById(R.id.txtLastFeedDate_preview);
+        TextView txtIsHungry_preview=findViewById(R.id.txtIsHungry_preview);
+
+        txtId_preview.setText(sheep.id+"");
+        txtNikName_preview.setText(sheep.nikName);
+        txtWeight_preview.setText(sheep.weight+"");
+
+        android.text.format.DateFormat df = new android.text.format.DateFormat();
+        txtLastFeedDate_preview.setText(df.format("yyyy-MM-dd hh:mm:ss a", sheep.lastFeedDate));
+
+        txtIsHungry_preview.setText(sheep.isHungry()?getResources().getString(R.string.yes):getResources().getString(R.string.no));
+        if(sheep.isHungry()){
+            txtIsHungry_preview.setText(getResources().getString(R.string.yes));
+            txtIsHungry_preview.setTextColor(Color.RED);
+        }else {
+            txtIsHungry_preview.setText(getResources().getString(R.string.no));
+            txtIsHungry_preview.setTextColor(Color.GREEN);
+        }
     }
 
 
@@ -73,5 +111,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         float zoomLevel = 16.0f; //This goes up to 21
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney,zoomLevel));
         mMap.getUiSettings().setZoomControlsEnabled(true);
+    }
+
+
+
+
+    private BroadcastReceiver reciever = new BroadcastReceiver(){
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            preview_();
+        }
+    };
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        IntentFilter filter1 = new IntentFilter("com.example.sheepflock.alarm");
+        registerReceiver(reciever,filter1);
+    }
+    @Override
+    public void onStop() {
+        super.onStop();
+        unregisterReceiver(reciever);
     }
 }

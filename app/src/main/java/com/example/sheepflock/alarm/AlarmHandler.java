@@ -33,7 +33,6 @@ public class AlarmHandler extends BroadcastReceiver
         wl.acquire();
 
         int itemId=intent.getIntExtra("sheepId",-1);
-        Toast.makeText(context, "Alarm !!!!!!!!!!"+itemId, Toast.LENGTH_LONG).show(); // For example
         Log.i("alarm","ready to alarm: "+itemId);
 
         SheepContentManager sheepContentManager=new SheepContentManager(context.getApplicationContext());
@@ -61,15 +60,17 @@ public class AlarmHandler extends BroadcastReceiver
     public static void setAlarm(Context context, Sheep sheep)
     {
         AlarmManager am =( AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
-        //Intent i = new Intent("com.example.sheepflock.alarm");
+        Intent i2 = new Intent("com.example.sheepflock.alarm");
         Intent i = new Intent(context,AlarmHandler.class);
         i.putExtra("sheepId",sheep.id);
         PendingIntent pi = PendingIntent.getBroadcast(context, sheep.id, i, 0);
+        PendingIntent pi2 = PendingIntent.getBroadcast(context, sheep.id, i2, 0);
 
-        Settings settings=Settings.Singleton();
+        Settings settings=new SheepContentManager(MainActivity.mainActivityContext).getSetting();
         Calendar nextDate=(Calendar)sheep.lastFeedDate.clone();
         nextDate.add(Calendar.SECOND,settings.feedPeriod_seconds);
         am.setRepeating(AlarmManager.RTC_WAKEUP,  nextDate.getTimeInMillis(),settings.remindPeriod, pi);
+        am.setRepeating(AlarmManager.RTC_WAKEUP,  nextDate.getTimeInMillis(),settings.remindPeriod, pi2);
     }
 
     public static void cancelAlarm(Context context, Sheep sheep)

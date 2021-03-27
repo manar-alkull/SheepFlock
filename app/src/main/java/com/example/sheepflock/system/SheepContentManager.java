@@ -2,6 +2,7 @@ package com.example.sheepflock.system;
 
 import android.content.Context;
 
+import com.example.sheepflock.Settings;
 import com.example.sheepflock.Sheep;
 import com.example.sheepflock.alarm.AlarmHandler;
 
@@ -11,15 +12,16 @@ import java.util.Map;
 
 public class SheepContentManager extends ContentHandler{
 
-    String fileName="sheeps.bin";
+    String sheepsFileName ="sheeps.bin";
+    String settingsFileName ="settings.bin";
     public SheepContentManager(Context context) {
         super(context, "");
     }
 
     public Map<Integer,Sheep> getSheeps(){
-        if(isFileExist(fileName)) {
+        if(isFileExist(sheepsFileName)) {
             try {
-                return (HashMap<Integer,Sheep>) getObject(fileName);
+                return (HashMap<Integer,Sheep>) getObject(sheepsFileName);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -30,7 +32,7 @@ public class SheepContentManager extends ContentHandler{
         HashMap<Integer,Sheep> sheeps=(HashMap<Integer,Sheep>)getSheeps();
         sheeps.put(sheep.id,sheep);
         try {
-            saveObject(sheeps,fileName);
+            saveObject(sheeps, sheepsFileName);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -48,5 +50,25 @@ public class SheepContentManager extends ContentHandler{
         Sheep sheep=new Sheep(1, "Dolly", 51, lastFeedDate,21.453348173455414,39.94836946708256);
         saveSheep(sheep);
         AlarmHandler.setAlarm(context,sheep);
+    }
+
+
+    public Settings getSetting() {
+        if(isFileExist(settingsFileName)) {
+            try {
+                return (Settings) getObject(settingsFileName);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return new Settings();
+    }
+
+    public void saveSettings(Settings settings){
+        try {
+            saveObject(settings, settingsFileName);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

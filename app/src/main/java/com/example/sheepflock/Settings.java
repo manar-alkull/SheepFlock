@@ -1,13 +1,15 @@
 package com.example.sheepflock;
 
-public class Settings {
-    private static Settings currentSettings=new Settings();
-    public static Settings Singleton(){
+import java.io.Serializable;
+
+public class Settings implements Serializable {
+    //private static Settings currentSettings=new Settings();
+/*    public static Settings Singleton(){
         return currentSettings;
-    }
-    private Settings() {
+    }*/
+    public Settings() {
     }
 
     public int feedPeriod_seconds =5;//seconds
-    public int remindPeriod=2;//millisec
+    public int remindPeriod=2000;//millisec
 }

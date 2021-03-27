@@ -1,5 +1,7 @@
 package com.example.sheepflock;
 
+import com.example.sheepflock.system.SheepContentManager;
+
 import java.io.Serializable;
 import java.util.Calendar;
 
@@ -24,7 +26,8 @@ public class Sheep implements Serializable {
     public double longitude;
 
     public boolean isHungry(){
-        return (Calendar.getInstance().getTimeInMillis()-this.lastFeedDate.getTimeInMillis())>(Settings.Singleton().feedPeriod_seconds*1000);
+        Settings settings=new SheepContentManager(MainActivity.mainActivityContext).getSetting();
+        return (Calendar.getInstance().getTimeInMillis()-this.lastFeedDate.getTimeInMillis())>(settings.feedPeriod_seconds*1000);
     }
 
 }

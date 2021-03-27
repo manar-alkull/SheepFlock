@@ -17,4 +17,23 @@
     <string name="notificationHeader">notificationHeader</string>
     <string name="need_feed">need feed</string>
     <string name="feedBtn">Feed</string>
+    <string name="setting_feedPeriod">feed period (second)</string>
+    <string name="remindPeriod">remind period (seconds)</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="seconds">Seconds</string>
+    <string name="minutes">Minutes</string>
+    <string name="hours">Hours</string>
+    <string name="saved_Successfully">saved Successfully</string>
+    <string name="settings">settings</string>
+    <string name="id">ID</string>
+    <string name="hungry">hungry</string>
+    <string name="notHungry">not Hungry</string>
+    <string name="yes">yes</string>
+    <string name="no">no</string>
+    <string name="NikName">nikname</string>
+    <string name="Weight">Weight</string>
+    <string name="LastFeedDate">Last Feed Date</string>
+    <string name="IsHungry">Is Hungry?</string>
 </resources>
