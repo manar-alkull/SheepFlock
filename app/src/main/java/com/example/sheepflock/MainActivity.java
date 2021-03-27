@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        IntentFilter  filter1 = new IntentFilter(this,AlarmHandler.class);
+        IntentFilter  filter1 = new IntentFilter("com.example.sheepflock.alarm");
         registerReceiver(reciever,filter1);
     }
     @Override
