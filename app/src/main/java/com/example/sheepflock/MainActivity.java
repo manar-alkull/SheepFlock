@@ -1,12 +1,19 @@
 package com.example.sheepflock;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 import android.widget.Toast;
 
+import com.example.sheepflock.alarm.AlarmHandler;
+import com.example.sheepflock.system.MyLocationManager;
+import com.example.sheepflock.system.SheepContentManager;
+import com.example.sheepflock.ui.home.HomeFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
@@ -22,14 +29,11 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     public static MyLocationManager locationManager;
-    public static ArrayList<Sheep> sheeps;
+    public static MainActivity mainActivityContext=null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,23 +63,23 @@ public class MainActivity extends AppCompatActivity {
         navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
             @Override
             public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
-                Toast.makeText(getBaseContext(),"aaaaaa",Toast.LENGTH_LONG).show();
-
             }
         });
 
-        sheeps=getDemo();
+        mainActivityContext=this;
+
+        demoSheeps();
         locationManager=new MyLocationManager(this);
     }
 
-    ArrayList<Sheep> getDemo(){
-        ArrayList<Sheep> sheeps=new ArrayList<Sheep>();
-        Calendar c = Calendar.getInstance();
-        sheeps.add(new Sheep("id1", "Dolly", 51, c,21.453348173455414,39.94836946708256));
-        c.add(Calendar.HOUR_OF_DAY, 3);
-        sheeps.add(new Sheep("id2", "Polly", 44, c,21.45488170288583,39.95013500744972 ));
-        return sheeps;
+    public SheepContentManager sheepContentManager=new SheepContentManager(this);
+    private void demoSheeps() {
+        if(sheepContentManager.getSheeps().size()==0){
+            sheepContentManager.demo(this);
+            HomeFragment.refresh();
+        }
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -95,5 +99,32 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+
+
+
+
+
+    private BroadcastReceiver reciever = new BroadcastReceiver(){
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            //HomeFragment homeFragment = (HomeFragment) getFragmentManager().findFragmentById(R.id.example_fragment);
+            HomeFragment.refresh();
+
+
+        }
+    };
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        IntentFilter  filter1 = new IntentFilter(this,AlarmHandler.class);
+        registerReceiver(reciever,filter1);
+    }
+    @Override
+    public void onStop() {
+        super.onStop();
+        unregisterReceiver(reciever);
     }
 }

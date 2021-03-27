@@ -13,4 +13,8 @@
 
     <string name="home_second">Home Second</string>
     <string name="title_activity_maps">Map</string>
+    <string name="notificationMessage">sheep  %1$s is hungry</string>
+    <string name="notificationHeader">notificationHeader</string>
+    <string name="need_feed">need feed</string>
+    <string name="feedBtn">Feed</string>
 </resources>
