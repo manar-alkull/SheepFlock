@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SheepFlock</string>
+    <string name="action_settings">إعدادات</string>
+    <string name="menu_home">الرئيسية</string>
+    <string name="feedBtn">تم الإطعام</string>
+    <string name="need_feed">يحتاج لإطعام</string>
+    <string name="setting_feedPeriod">مدة الى وجبة الطعام التالية (ثواني)</string>
+    <string name="remindPeriod">مدة بين رسائل التذكير (ثواني)</string>
+    <string name="seconds">ثواني</string>
+    <string name="minutes">دقائق</string>
+    <string name="hours">ساعات</string>
+    <string name="saved_Successfully">تم الحفظ بنجاح</string>
+    <string name="settings">الاعدادات</string>
+    <string name="id">المعرف</string>
+    <string name="hungry">جائع</string>
+    <string name="notHungry">ليس جائع</string>
+    <string name="yes">نعم</string>
+    <string name="no">لا</string>
+    <string name="NikName">اللقب</string>
+    <string name="Weight">الوزن</string>
+    <string name="LastFeedDate">تاريخ اخر إطعام</string>
+    <string name="IsHungry">جائع؟</string>
+    <string name="notificationMessage">النعجة %1$s جائعة</string>
+    <string name="notificationHeader" >تنبيه للماشية</string>
+
+
+</resources>
