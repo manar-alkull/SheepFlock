@@ -17,6 +17,7 @@
         android:roundIcon="@drawable/sheepapp"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity android:name=".SettingsPage"></activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -39,14 +40,19 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
+
+
         <receiver
-            android:name=".alarm.AlarmHandler"
-            android:process=":remote"></receiver>
+            android:name=".alarm.AlarmHandler">
+            <intent-filter>
+                <action android:name="com.example.sheepflock.alarm"></action>
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>

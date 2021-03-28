@@ -42,18 +42,21 @@ public class SystemServices {
         builder.setSound(alarmSound);
     }
     public static NotificationCompat.Builder notify(Context context, String notificationText, String notificationHeader, Intent open_activity_intent) {
-        //Intent open_activity_intent = new Intent(context, NotificationActivity.class);
-
         PendingIntent pending_intent = PendingIntent
                 .getActivity(context, 0, open_activity_intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        return notify_pending(context,notificationText,notificationHeader,pending_intent);
+    }
+
+    public static NotificationCompat.Builder notify_pending(Context context, String notificationText, String notificationHeader, PendingIntent pending_intent) {
+        //Intent open_activity_intent = new Intent(context, NotificationActivity.class);
 
         NotificationManager notification_manager = (NotificationManager) context
                 .getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationCompat.Builder  notification_builder;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            String chanel_id = "SairanAPI";
-            CharSequence name = "SairanAPI";
-            String description = "SairanAPI2 Chanel Description";
+            String chanel_id = "sheepsAPI";
+            CharSequence name = "sheepsAPI";
+            String description = "sheepsAPI Chanel Description";
             int importance = NotificationManager.IMPORTANCE_HIGH;
             NotificationChannel mChannel = new NotificationChannel(chanel_id, name, importance);
             mChannel.setDescription(description);

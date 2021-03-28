@@ -2,9 +2,11 @@ package com.example.sheepflock.alarm;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.PowerManager;
 import android.util.Log;
 import android.widget.Toast;
@@ -34,18 +36,36 @@ public class AlarmHandler extends BroadcastReceiver
 
         int itemId=intent.getIntExtra("sheepId",-1);
         Log.i("alarm","ready to alarm: "+itemId);
-
         SheepContentManager sheepContentManager=new SheepContentManager(context.getApplicationContext());
         Sheep sheep= sheepContentManager.getSheeps().get(itemId);
-        Intent open_activity_intent = new Intent(context, MapsActivity.class);
-        open_activity_intent.putExtra("itemId",itemId);
-        String notifyHeader=context.getResources().getString(R.string.notificationHeader);
-        String notifyMessage=context.getResources().getString(R.string.notificationMessage, sheep.nikName);
-        SystemServices.notifyWithSound(context, notifyMessage,notifyHeader,open_activity_intent);
+
+        sendNotification(context,sheep);
 
         sheepListeners.sendToAll(sheep);
         HomeFragment.refresh();
         wl.release();
+    }
+
+    private void sendNotification(Context context,Sheep sheep) {
+        String notifyHeader=context.getResources().getString(R.string.notificationHeader);
+        String notifyMessage=context.getResources().getString(R.string.notificationMessage, sheep.nikName);
+
+/*        Intent open_activity_intent = new Intent(context, MapsActivity.class);
+        open_activity_intent.putExtra("itemId",itemId);
+        SystemServices.notifyWithSound(context, notifyMessage,notifyHeader,open_activity_intent);*/
+
+        Intent resultIntent = new Intent(context, MainActivity.class);
+        resultIntent.putExtra("itemId",sheep.id);
+
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+    // Adds the back stack
+        stackBuilder.addParentStack(MainActivity.class);
+    // Adds the Intent to the top of the stack
+        stackBuilder.addNextIntent(resultIntent);
+    // Gets a PendingIntent containing the entire back stack
+        PendingIntent resultPendingIntent =
+        stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        SystemServices.notify_pending(context, notifyMessage,notifyHeader,resultPendingIntent);
     }
 
     public static GenericListenersRegister<Sheep, SheepHungryListener> sheepListeners=new GenericListenersRegister<Sheep, SheepHungryListener>() {
@@ -71,6 +91,26 @@ public class AlarmHandler extends BroadcastReceiver
         nextDate.add(Calendar.SECOND,settings.feedPeriod_seconds);
         am.setRepeating(AlarmManager.RTC_WAKEUP,  nextDate.getTimeInMillis(),settings.remindPeriod, pi);
         am.setRepeating(AlarmManager.RTC_WAKEUP,  nextDate.getTimeInMillis(),settings.remindPeriod, pi2);
+    }
+
+
+    public static void setAlarm2(Context context, Sheep sheep) {
+        /*Intent i2 = new Intent("com.example.sheepflock.alarm");
+        Intent i = new Intent(context,AlarmHandler.class);*/
+        Intent alarmIntent = new Intent(context, AlarmHandler.class);
+        //alarmIntent.setAction("com.example.sheepflock.alarm");
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, sheep.id, alarmIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+        AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        manager.cancel(pendingIntent);
+        Settings settings=new SheepContentManager(MainActivity.mainActivityContext).getSetting();
+        Calendar nextDate=(Calendar)sheep.lastFeedDate.clone();
+        if (Build.VERSION.SDK_INT >= 23) {
+            manager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, nextDate.getTimeInMillis(), pendingIntent);
+        } else if (Build.VERSION.SDK_INT >= 19) {
+            manager.setExact(AlarmManager.RTC_WAKEUP, nextDate.getTimeInMillis(), pendingIntent);
+        } else {
+            manager.set(AlarmManager.RTC_WAKEUP, nextDate.getTimeInMillis(), pendingIntent);
+        }
     }
 
     public static void cancelAlarm(Context context, Sheep sheep)

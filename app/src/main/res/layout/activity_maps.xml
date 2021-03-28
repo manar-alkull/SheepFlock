@@ -49,8 +49,9 @@ tools:context=".MapsActivity">
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:width="50dp"
-                android:gravity="end"
-                android:text="@string/id" />
+                android:gravity="start"
+                android:text="@string/id"
+                android:textAlignment="gravity" />
 
             <TextView
                 android:id="@+id/txtId_preview"
@@ -74,8 +75,9 @@ tools:context=".MapsActivity">
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:width="50dp"
-                android:gravity="end"
-                android:text="@string/NikName" />
+                android:gravity="start"
+                android:text="@string/NikName"
+                android:textAlignment="gravity" />
 
             <TextView
                 android:id="@+id/txtNikName_preview"
@@ -99,8 +101,9 @@ tools:context=".MapsActivity">
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:width="50dp"
-                android:gravity="end"
-                android:text="@string/Weight" />
+                android:gravity="start"
+                android:text="@string/Weight"
+                android:textAlignment="gravity" />
 
             <TextView
                 android:id="@+id/txtWeight_preview"
@@ -124,8 +127,9 @@ tools:context=".MapsActivity">
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:width="50dp"
-                android:gravity="end"
-                android:text="@string/LastFeedDate" />
+                android:gravity="start"
+                android:text="@string/LastFeedDate"
+                android:textAlignment="gravity" />
 
             <TextView
                 android:id="@+id/txtLastFeedDate_preview"
@@ -149,8 +153,9 @@ tools:context=".MapsActivity">
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:width="50dp"
-                android:gravity="end"
-                android:text="@string/IsHungry" />
+                android:gravity="start"
+                android:text="@string/IsHungry"
+                android:textAlignment="gravity" />
 
             <TextView
                 android:id="@+id/txtIsHungry_preview"

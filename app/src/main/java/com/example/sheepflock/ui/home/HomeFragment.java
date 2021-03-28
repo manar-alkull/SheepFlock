@@ -63,6 +63,8 @@ public class HomeFragment extends Fragment {
             HomeFragment.homeFragment.refresh_();
     }
     private void refresh_() {
+        if(getActivity()==null)
+            return;
         final SheepsListAdapter adapter = new SheepsListAdapter(getActivity(),new ArrayList<Sheep>(sheepContentManager.getSheeps().values()));
         listView=(ListView) root.findViewById(R.id.sheepsLst);
         listView.setAdapter(adapter);
@@ -89,7 +91,7 @@ public class HomeFragment extends Fragment {
             TextView sheepInfoTxt = (TextView) rowView.findViewById(R.id.sheepInfoTxt);
             TextView isHungryTxt = (TextView) rowView.findViewById(R.id.isHungryTxt);
 
-            if(sheep.isHungry()){
+            if(sheep.isHungry(context)){
                 isHungryTxt.setVisibility(View.VISIBLE);
             }else
                 isHungryTxt.setVisibility(View.INVISIBLE);

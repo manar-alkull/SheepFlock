@@ -39,7 +39,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        int itemId = getIntent().getIntExtra("itemId",-1);
+        int itemId = getIntent().getIntExtra("itemId",1);
 
         sheepContentManager=new SheepContentManager(this);
 
@@ -81,8 +81,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         android.text.format.DateFormat df = new android.text.format.DateFormat();
         txtLastFeedDate_preview.setText(df.format("yyyy-MM-dd hh:mm:ss a", sheep.lastFeedDate));
 
-        txtIsHungry_preview.setText(sheep.isHungry()?getResources().getString(R.string.yes):getResources().getString(R.string.no));
-        if(sheep.isHungry()){
+        txtIsHungry_preview.setText(sheep.isHungry(MainActivity.mainActivityContext)?getResources().getString(R.string.yes):getResources().getString(R.string.no));
+        if(sheep.isHungry(MainActivity.mainActivityContext)){
             txtIsHungry_preview.setText(getResources().getString(R.string.yes));
             txtIsHungry_preview.setTextColor(Color.RED);
         }else {
